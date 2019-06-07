@@ -10,7 +10,15 @@ namespace fundamental_c_sharp
     {
         static void Main(string[] args)
         {
-            System.Console.Out.WriteLine("Hello C#");
+            Program.output("Hello C#");
+
+            var generic = new Generics.MyClass<FormatException>();
+            Program.output($"Generic type: {generic.GenericType}");
+        }
+
+        static void output(string s)
+        {
+            System.Console.Out.WriteLine(s);
         }
     }
 }
