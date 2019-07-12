@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Generics
+namespace fundamental_c_sharp
 {
 
     class MyClass<T> where T : Exception
     {
-        public string GenericType
-        {
-            get
-            {
-                return typeof(T).Name;
-            }
-        }
+        public string GenericType => typeof(T).Name;
     }
 }
