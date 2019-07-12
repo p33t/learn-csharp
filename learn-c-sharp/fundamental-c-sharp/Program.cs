@@ -12,8 +12,12 @@ namespace fundamental_c_sharp
         {
             output("Hello C#");
 
-            var generic = new MyClass<FormatException>();
+            var generic = new Generics.MyClass<FormatException>();
             output($"Generic type: {generic.GenericType}");
+            
+            var multiApply = new Generics.MultiApply();
+            multiApply.apply("bruce");
+            multiApply.apply(-1);
         }
 
         static void output(string s)
