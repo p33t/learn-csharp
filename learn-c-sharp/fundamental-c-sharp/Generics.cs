@@ -1,5 +1,6 @@
 ﻿using System;
 
+// ReSharper disable once CheckNamespace
 namespace fundamental_c_sharp.Generics
 {
 
@@ -10,17 +11,17 @@ namespace fundamental_c_sharp.Generics
 
     interface IApply<in T>
     {
-        void apply(T arg);
+        void Apply(T arg);
     }
 
     class MultiApply : IApply<string>, IApply<int>
     {
-        public void apply(string arg)
+        public void Apply(string arg)
         {
             // empty
         }
 
-        public void apply(int arg)
+        public void Apply(int arg)
         {
             // empty
         }

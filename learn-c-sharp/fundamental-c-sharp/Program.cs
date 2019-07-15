@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace fundamental_c_sharp
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     class Program
     {
         static void Main(string[] args)
@@ -16,8 +17,8 @@ namespace fundamental_c_sharp
             output($"Generic type: {generic.GenericType}");
             
             var multiApply = new Generics.MultiApply();
-            multiApply.apply("bruce");
-            multiApply.apply(-1);
+            multiApply.Apply("bruce");
+            multiApply.Apply(-1);
         }
 
         static void output(string s)
