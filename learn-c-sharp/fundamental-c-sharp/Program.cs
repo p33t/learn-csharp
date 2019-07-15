@@ -19,6 +19,9 @@ namespace fundamental_c_sharp
             var multiApply = new Generics.MultiApply();
             multiApply.Apply("bruce");
             multiApply.Apply(-1);
+            
+            
+            Time.Timestamps();
         }
 
         static void output(string s)
