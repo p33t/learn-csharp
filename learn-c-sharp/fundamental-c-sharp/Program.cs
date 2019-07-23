@@ -22,6 +22,8 @@ namespace fundamental_c_sharp
             
             
             Time.Timestamps();
+            
+            ParameterPassing.Demo();
         }
 
         static void output(string s)
