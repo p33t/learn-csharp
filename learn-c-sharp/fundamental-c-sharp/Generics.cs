@@ -30,9 +30,9 @@ namespace fundamental_c_sharp
 
     public class Generics
     {
-        public static Func<string, string> hello = name => "hello " + name;
+        public static Func<string, string> Hello = name => "hello " + name;
 
-        public static Func<string, string> hello2 = name => wrap(hello)(name);
+        public static Func<string, string> Hello2 = name => wrap(Hello)(name);
 
         private static Func<string, T> wrap<T>(Func<string, T> orig)
         {
@@ -49,7 +49,7 @@ namespace fundamental_c_sharp
             multiApply.Apply("bruce");
             multiApply.Apply(-1);           
             
-            Util.WriteLn("Expecting 'hello BRUCE': " + hello2("bruce"));
+            Util.WriteLn("Expecting 'hello BRUCE': " + Hello2("bruce"));
         }
     }
 }
