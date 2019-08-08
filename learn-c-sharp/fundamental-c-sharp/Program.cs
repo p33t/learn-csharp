@@ -11,25 +11,12 @@ namespace fundamental_c_sharp
     {
         static void Main(string[] args)
         {
-            output("Hello C#");
-
-            var generic = new Generics.MyClass<FormatException>();
-            output($"Generic type: {generic.GenericType}");
-            
-            var multiApply = new Generics.MultiApply();
-            multiApply.Apply("bruce");
-            multiApply.Apply(-1);
-            
-            
+            Util.output("Hello C#");
+            Generics.Demo();
             Time.Timestamps();
             
             ParameterPassing.Demo();
             Constructors.Demo();
-        }
-
-        static void output(string s)
-        {
-            System.Console.Out.WriteLine(s);
         }
     }
 }
