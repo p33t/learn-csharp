@@ -11,7 +11,7 @@ namespace fundamental_c_sharp
     {
         static void Main(string[] args)
         {
-            Util.output("Hello C#");
+            Util.WriteLn("Hello C#");
             Generics.Demo();
             Time.Timestamps();
             

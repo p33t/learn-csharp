@@ -4,7 +4,7 @@ namespace fundamental_c_sharp
 {
     public class Util
     {
-        public static void output(string s)
+        public static void WriteLn(string s)
         {
             Console.Out.WriteLine(s);
         }
