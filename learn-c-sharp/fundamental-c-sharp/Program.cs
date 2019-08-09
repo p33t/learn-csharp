@@ -14,11 +14,10 @@ namespace fundamental_c_sharp
             Util.WriteLn("Hello C#");
             Generics.Demo();
             Time.Timestamps();
-            
             ParameterPassing.Demo();
             Constructors.Demo();
-            
             Polymorphism.Demo();
+            Functions.Demo();
         }
     }
 }
