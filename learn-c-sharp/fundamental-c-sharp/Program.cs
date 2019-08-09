@@ -17,6 +17,8 @@ namespace fundamental_c_sharp
             
             ParameterPassing.Demo();
             Constructors.Demo();
+            
+            Polymorphism.Demo();
         }
     }
 }

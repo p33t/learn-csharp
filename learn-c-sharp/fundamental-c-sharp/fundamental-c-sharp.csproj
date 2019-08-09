@@ -46,6 +46,7 @@
     <Compile Include="Constructors.cs" />
     <Compile Include="Generics.cs" />
     <Compile Include="ParameterPassing.cs" />
+    <Compile Include="Polymorphism.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Time.cs" />
