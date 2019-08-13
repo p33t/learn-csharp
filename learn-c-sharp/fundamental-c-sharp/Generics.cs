@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace fundamental_c_sharp
 {
-
     class MyClass<T> where T : Exception
     {
         public string GenericType => typeof(T).Name;
@@ -28,6 +27,22 @@ namespace fundamental_c_sharp
         }
     }
 
+    interface ICovarying<in T> where T : Exception
+    {
+    }
+
+    class Covarying<T> : ICovarying<T> where T : Exception
+    {
+    }
+
+    class SystemWrap : ICovarying<SystemException>
+    {
+    }
+
+    class InvalidWrap : ICovarying<InvalidOperationException>
+    {
+    }
+    
     public class Generics
     {
         public static Func<string, string> Hello = name => "hello " + name;
@@ -36,24 +51,23 @@ namespace fundamental_c_sharp
 
         // This does NOT retain the name of the arg for hints in the IDE 
         public static Func<string, string> Hello3 = name => wrap(Hello)(name);
-
-        
         private static Func<string, T> wrap<T>(Func<string, T> orig)
         {
             return name => orig(name.ToUpper());
-        } 
-        
+        }
         public static void Demo()
         {
-
             var generic = new MyClass<FormatException>();
             Util.WriteLn($"Generic type: {generic.GenericType}");
-            
+
             var multiApply = new MultiApply();
             multiApply.Apply("bruce");
-            multiApply.Apply(-1);           
-            
+            multiApply.Apply(-1);
+
             Util.WriteLn("Expecting 'hello BRUCE': " + Hello2("bruce"));
+
+            // Still doesn't work
+//            var list = new List<ICovarying<Exception>> {new SystemWrap(), new InvalidWrap()};
         }
     }
 }
