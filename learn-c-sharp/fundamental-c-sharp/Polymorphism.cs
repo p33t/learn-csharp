@@ -6,6 +6,7 @@ namespace fundamental_c_sharp
         {
             public string Hello() => "parent1";
 
+            // Can still invoke this from child classes
             public virtual string HelloV() => "parent2";
         }
 
@@ -14,6 +15,14 @@ namespace fundamental_c_sharp
             public new string Hello() => "child1";
 
             public override string HelloV() => "child2";
+        }
+
+        class ChildMinimal : Parent
+        {
+            public override string HelloV()
+            {
+                return base.HelloV() + "_bonus";
+            }
         }
 
         public static void Demo()
@@ -28,6 +37,8 @@ namespace fundamental_c_sharp
             parent = child;
             Util.WriteLn($"Expecting 'parent1' due to 'hiding' polymorphism: {parent.Hello()}");
             Util.WriteLn($"Expecting 'child2' due to 'override' polymorphism: {parent.HelloV()}");
+            var min = new ChildMinimal();
+            Util.WriteLn($"Expecting 'parent2_bonus': {min.HelloV()}");
         }
     }
 }
