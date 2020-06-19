@@ -27,7 +27,7 @@ namespace fundamental_c_sharp
         }
     }
 
-    interface ICovarying<in T> where T : Exception
+    interface ICovarying<out T> where T : Exception
     {
     }
 
@@ -66,8 +66,8 @@ namespace fundamental_c_sharp
 
             Util.WriteLn("Expecting 'hello BRUCE': " + Hello2("bruce"));
 
-            // Still doesn't work
-//            var list = new List<ICovarying<Exception>> {new SystemWrap(), new InvalidWrap()};
+            // 'out' indicates covarying (not 'in')
+            var list = new List<ICovarying<Exception>> {new SystemWrap(), new InvalidWrap()};
         }
     }
 }
