@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>fundamental_c_sharp</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
