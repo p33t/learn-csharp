@@ -19,6 +19,7 @@ namespace fundamental_c_sharp
             Polymorphism.Demo();
             Functions.Demo();
             Delegates.Demo();
+            Reflection.DispatchProxy();
         }
     }
 }
