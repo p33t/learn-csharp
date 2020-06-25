@@ -20,6 +20,7 @@ namespace fundamental_c_sharp
             Functions.Demo();
             Delegates.Demo();
             Reflection.DispatchProxy();
+            ExtensionMethod.ExtensionMethod.Demo();
         }
     }
 }
