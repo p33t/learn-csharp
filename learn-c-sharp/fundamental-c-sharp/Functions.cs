@@ -18,6 +18,15 @@ namespace fundamental_c_sharp
 
             // Trying to identify a wrapper function/class
             if (methInst.Target is Wrapper) Console.WriteLine("Yay!  Identified");
+            
+            // multi-line
+            Func<string, string> multi = (arg) =>
+            {
+                // ReSharper disable once ConvertToConstant.Local
+                var s = "Hello ";
+                return s + arg;
+            };
+            Describe(multi);
         }
 
         private static void Describe(Func<string, string> hello)
