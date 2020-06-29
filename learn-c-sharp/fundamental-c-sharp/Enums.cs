@@ -24,6 +24,9 @@ namespace fundamental_c_sharp
 
             var both = MyFlags.Before | MyFlags.After;
             Util.WriteLn($"Expecting Before, After: {both}");
+
+            Util.WriteLn($"Expecting no overlap (True): {(MyFlags.Before & MyFlags.After) == MyFlags.None}");
+            Util.WriteLn($"Expecting overlap (False): {(MyFlags.Before & MyFlags.Before) == MyFlags.None}");
         }
     }
 }
