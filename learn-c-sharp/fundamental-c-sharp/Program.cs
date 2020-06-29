@@ -22,6 +22,7 @@ namespace fundamental_c_sharp
             Reflection.DispatchProxy();
             ExtensionMethod.ExtensionMethod.Demo();
             TaskAsync.Demo().Wait();
+            Enums.Demo();
         }
     }
 }
