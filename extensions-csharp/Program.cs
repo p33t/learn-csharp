@@ -6,7 +6,8 @@ namespace extensions_csharp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Configuration.Configuration.Demo();
+            Console.WriteLine("DONE");
         }
     }
 }
