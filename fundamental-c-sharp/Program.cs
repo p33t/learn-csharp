@@ -23,6 +23,7 @@ namespace fundamental_c_sharp
             ExtensionMethod.ExtensionMethod.Demo();
             TaskAsync.Demo().Wait();
             Enums.Demo();
+            NullableX.Demo();
         }
     }
 }
