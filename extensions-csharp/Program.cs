@@ -7,6 +7,7 @@ namespace extensions_csharp
         static void Main(string[] args)
         {
             Configuration.Configuration.Demo();
+            DependencyInjection.DependencyInjection.Demo();
             Console.WriteLine("DONE");
         }
     }
