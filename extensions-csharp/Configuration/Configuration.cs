@@ -5,6 +5,7 @@
         public static void Demo()
         {
             InMemory.Demo();
+            FileConfig.Demo();
         }
     }
 }
