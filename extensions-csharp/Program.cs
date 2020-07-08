@@ -8,6 +8,7 @@ namespace extensions_csharp
         {
             Configuration.Configuration.Demo();
             DependencyInjection.DependencyInjection.Demo();
+            Logging.Logging.Demo();
             Console.WriteLine("DONE");
         }
     }
