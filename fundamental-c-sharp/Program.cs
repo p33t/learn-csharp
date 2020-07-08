@@ -24,6 +24,7 @@ namespace fundamental_c_sharp
             TaskAsync.Demo().Wait();
             Enums.Demo();
             NullableX.Demo();
+            ValueTuples.Demo();
         }
     }
 }
