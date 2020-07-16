@@ -25,6 +25,7 @@ namespace fundamental_c_sharp
             Enums.Demo();
             NullableX.Demo();
             ValueTuples.Demo();
+            PartialClass.PartialClass.Demo();
         }
     }
 }
