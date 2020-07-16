@@ -1,6 +1,6 @@
 ﻿namespace fundamental_c_sharp.PartialClass
 {
-    public partial class MyClass
+    public partial class MyClass : IMyClass
     {
         private readonly string _field;
         
@@ -8,5 +8,10 @@
         {
             _field = fieldValue;
         }
+
+        public string MyMethod1()
+        {
+            return "some-string";
+        }        
     }
 }

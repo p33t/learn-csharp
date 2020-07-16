@@ -2,7 +2,7 @@
 {
     public partial class MyClass
     {
-        public string MyMethod()
+        public string MyMethod2()
         {
             // can see private fields in other files
             return _field;
