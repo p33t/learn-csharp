@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace fundamental_c_sharp
+﻿namespace fundamental_c_sharp
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     class Program
@@ -26,6 +20,7 @@ namespace fundamental_c_sharp
             NullableX.Demo();
             ValueTuples.Demo();
             PartialClass.PartialClass.Demo();
+            Attributes.Attributes.Demo();
         }
     }
 }
