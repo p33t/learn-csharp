@@ -15,12 +15,13 @@
             Delegates.Demo();
             Reflection.DispatchProxy();
             ExtensionMethod.ExtensionMethod.Demo();
-            TaskAsync.Demo().Wait();
+            // Too slow... TaskAsync.Demo().Wait();
             Enums.Demo();
             NullableX.Demo();
             ValueTuples.Demo();
             PartialClass.PartialClass.Demo();
             Attributes.Attributes.Demo();
+            DateTimes.Demo();
         }
     }
 }
