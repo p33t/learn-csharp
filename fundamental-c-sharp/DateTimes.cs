@@ -56,6 +56,13 @@ namespace fundamental_c_sharp
             Trace.Assert(DateTimeKind.Local == altLocal.Kind);
             Trace.Assert(6 == altLocal.Hour);
             Trace.Assert(20 == altLocal.Day);
+
+            // Can change the 'Kind'
+            Trace.Assert(DateTime.SpecifyKind(altLocal, DateTimeKind.Utc) == altUniversal);
+            
+            // 'Today' and 'Now' are 'Local'
+            Trace.Assert(DateTime.Today.Kind == DateTimeKind.Local);
+            Trace.Assert(DateTime.Now.Kind == DateTimeKind.Local);
             
             // equals examines the 'moment' in time
             // Trace.Assert(someDateTime.Equals(localDateTime)); ===> False
