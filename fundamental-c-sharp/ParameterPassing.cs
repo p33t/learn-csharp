@@ -7,7 +7,7 @@ namespace fundamental_c_sharp
     {
         class TestClass
         {
-            public string Str { get; set; }
+            public string Str { get; set; } = string.Empty;
         }
         
         public static void Demo()

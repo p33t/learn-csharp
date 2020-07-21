@@ -34,7 +34,7 @@ namespace fundamental_c_sharp
             var typ = hello.GetType();
             Console.WriteLine("Type of function: " + typ);
 
-            var targetType = hello.Target.GetType();
+            var targetType = hello.Target?.GetType();
             Console.WriteLine("Target Type of function: " + targetType);
         }
     }

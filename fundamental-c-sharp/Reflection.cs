@@ -19,16 +19,20 @@ namespace fundamental_c_sharp
 
         class LoggingProxy<T> : DispatchProxy
         {
-            private T _delegate;
+            private object? _delegate;
 
             public static T Create(T decorated)
             {
-                object proxy = Create<T, LoggingProxy<T>>();
-                ((LoggingProxy<T>) proxy).InitDelegate(decorated);
-                return (T) proxy;
+                object? proxy = Create<T, LoggingProxy<T>>();
+                if (proxy != null)
+                {
+                    ((LoggingProxy<T>) proxy).InitDelegate(decorated);
+                    return (T) proxy;
+                }
+                throw new Exception("Could not create DispatchProxy instance");
             }
 
-            protected override object Invoke(MethodInfo targetMethod, object[] args)
+            protected override object? Invoke(MethodInfo targetMethod, object[] args)
             {
                 Util.WriteLn($"Before {targetMethod}");
                 var result = targetMethod.Invoke(_delegate, args);

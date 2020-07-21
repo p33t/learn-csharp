@@ -16,9 +16,9 @@ namespace fundamental_c_sharp.Attributes
             var firstAttrib = typeof(MyClass).CustomAttributes.First();
             Trace.Assert(firstAttrib.AttributeType == typeof(MyFirstAttribute));
             // NOPE.. Trace.Assert(((MyFirstAttribute)firstAttrib.NamedArguments.).StrVal == "hello");
-            var myFirst = (MyFirstAttribute) Attribute.GetCustomAttribute(typeof(MyClass), typeof(MyFirstAttribute));
+            var myFirst = (MyFirstAttribute?) Attribute.GetCustomAttribute(typeof(MyClass), typeof(MyFirstAttribute));
             Trace.Assert(myFirst != null);
-            Trace.Assert(myFirst.StrVal == "hello");
+            Trace.Assert(myFirst?.StrVal == "hello");
         }
     }
 }
