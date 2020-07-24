@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 // ReSharper disable once CheckNamespace
 namespace fundamental_c_sharp
@@ -55,6 +56,17 @@ namespace fundamental_c_sharp
         {
             return name => orig(name.ToUpper());
         }
+
+        private static string myNameOf<T>()
+        {
+            return nameof(T); // This returns "T" :(
+        }
+
+        private static string genericTypeName<T>()
+        {
+            return typeof(T).Name;
+        }
+        
         public static void Demo()
         {
             var generic = new MyClass<FormatException>();
@@ -68,6 +80,9 @@ namespace fundamental_c_sharp
 
             // 'out' indicates covarying (not 'in')
             var list = new List<ICovarying<Exception>> {new SystemWrap(), new InvalidWrap()};
+            
+            Trace.Assert(myNameOf<Generics>() == "T");
+            Trace.Assert(genericTypeName<Generics>() == "Generics");
         }
     }
 }
