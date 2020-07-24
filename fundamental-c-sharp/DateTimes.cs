@@ -1,21 +1,27 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Transactions;
 
 namespace fundamental_c_sharp
 {
-    public class DateTimes
+    public static class DateTimes
     {
         public static void Demo()
         {
             Console.WriteLine("DateTimes =========================");
+            ExploreDateTime();
+            
+            Trace.Assert((int) DayOfWeek.Monday == 1); 
+        }
+
+        private static void ExploreDateTime()
+        {
             // DateTime is immutable struct
-            
+
             var someDate = new DateTime(2020, 7, 20); // July 20
-            
+
             // The 'Kind' defaults to 'Unspecified'
             Trace.Assert(DateTimeKind.Unspecified == someDate.Kind);
-            
+
             // Internally stored as 'ticks' so can add any unit
             var someDateTime = someDate.AddMinutes(390); // 6:30 AM
             Trace.Assert(DateTimeKind.Unspecified == someDateTime.Kind);
@@ -34,7 +40,7 @@ namespace fundamental_c_sharp
             Trace.Assert("Sun, 19 Jul 2020 23:30:00 GMT" == localDateTime.ToString("R"));
             Trace.Assert(localDateTime.Equals(localDateTime.ToLocalTime()));
             Trace.Assert(localDateTime == localDateTime.ToLocalTime());
-            
+
             // Any non-Utc kind is assumed to need converting for ToUniversalTime() 
             var universalTime = someDateTime.ToUniversalTime();
             Trace.Assert(13 == universalTime.Hour);
@@ -59,11 +65,11 @@ namespace fundamental_c_sharp
 
             // Can change the 'Kind'
             Trace.Assert(DateTime.SpecifyKind(altLocal, DateTimeKind.Utc) == altUniversal);
-            
+
             // 'Today' and 'Now' are 'Local'
             Trace.Assert(DateTime.Today.Kind == DateTimeKind.Local);
             Trace.Assert(DateTime.Now.Kind == DateTimeKind.Local);
-            
+
             // equals examines the 'moment' in time
             // Trace.Assert(someDateTime.Equals(localDateTime)); ===> False
             // Trace.Assert(someDateTime.Equals(universalTime)); ===> False

@@ -22,6 +22,7 @@
             PartialClass.PartialClass.Demo();
             Attributes.Attributes.Demo();
             DateTimes.Demo();
+            DateTimeOffsets.Demo();
         }
     }
 }
