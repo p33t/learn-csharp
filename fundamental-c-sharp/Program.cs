@@ -23,6 +23,7 @@
             Attributes.Attributes.Demo();
             DateTimes.Demo();
             DateTimeOffsets.Demo();
+            Casting.Demo();
         }
     }
 }
