@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace fundamental_c_sharp
@@ -8,6 +9,8 @@ namespace fundamental_c_sharp
         interface MyInterface
         {
             public string hello();
+
+            public DateTime MyDateTime { get; set; }
         }
         class MyClass : MyInterface
         {
@@ -15,6 +18,8 @@ namespace fundamental_c_sharp
             {
                 return "world";
             }
+
+            public DateTime MyDateTime { get; set; }
         }
 
         class LoggingProxy<T> : DispatchProxy
@@ -46,8 +51,20 @@ namespace fundamental_c_sharp
             }
         }
 
+        public static void PropertyInvocation()
+        {
+            Console.WriteLine("Reflection - Property Invocation =================");
+            var myCls = new MyClass();
+            PropertyInfo myProp = typeof(MyClass).GetProperty(nameof(MyClass.MyDateTime)) ?? throw new Exception("Impossible");
+            var value = myProp.GetValue(myCls);
+            if (!(value is DateTime dt))
+                throw new Exception("Should be a DateTime");
+            Trace.Assert(dt == new DateTime());
+        }
+
         public static void DispatchProxy()
         {
+            Console.WriteLine("Reflection - Dispatch Proxy =================");
             var proxy = LoggingProxy<MyInterface>.Create( new MyClass());
             proxy.hello();
         }

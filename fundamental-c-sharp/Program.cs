@@ -14,6 +14,7 @@
             Functions.Demo();
             Delegates.Demo();
             Reflection.DispatchProxy();
+            Reflection.PropertyInvocation();
             ExtensionMethod.ExtensionMethod.Demo();
             // Too slow... TaskAsync.Demo().Wait();
             Enums.Demo();
@@ -24,6 +25,7 @@
             DateTimes.Demo();
             DateTimeOffsets.Demo();
             Casting.Demo();
+            Equality.Demo();
         }
     }
 }
