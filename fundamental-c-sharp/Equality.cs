@@ -13,6 +13,12 @@ namespace fundamental_c_sharp
             Trace.Assert(s1 == s1B); // == has been overridden in string
             Trace.Assert(s1 != s2);
             Trace.Assert(ReferenceEquals(s2, s2B)); // Can always compare references
+            
+            string? s3 = null;
+            Trace.Assert(s3 == null);
+            Trace.Assert((s3 != null) is false);
+            Trace.Assert(s2 != s3);
+            Trace.Assert(s3 != s2);
         }
     }
 }
