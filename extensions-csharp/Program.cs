@@ -9,6 +9,7 @@ namespace extensions_csharp
             Configuration.Configuration.Demo();
             DependencyInjection.DependencyInjection.Demo();
             Logging.Logging.Demo();
+            AutoMapping.AutoMapping.Demo();
             Console.WriteLine("DONE");
         }
     }
