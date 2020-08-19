@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace extensions_csharp.AutoMapping
 {
@@ -15,8 +17,10 @@ namespace extensions_csharp.AutoMapping
                     .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src.FamilyName))
                     .ForMember(dest => dest.AddressRegion, opt => opt.MapFrom(src => src.Address.Province))
                     .ForMember(dest => dest.AddressCity, opt => opt.MapFrom(src => src.Address.City))
-                    // Flagging is NOT done via updates.  Specific 'Flag' op that timestamps.  Is one-way mapping.
+                    // Flagging is NOT done via CRUD.  There is specific 'Flag' op that timestamps.  Is one-way mapping.
                     .ForMember(dest => dest.IsFlagged, opt => opt.MapFrom(src => src.FlaggedAt.HasValue))
+                    // Doesn't seem to affect anything
+                    // .ForMember(dest => dest.IsFlagged, opt => opt.ExplicitExpansion())
                     .ReverseMap();
             }
         }
@@ -37,7 +41,7 @@ namespace extensions_csharp.AutoMapping
             deep.Address!.City = "La Paz";
             deep.Address.Province = "Bolivia";
             deep.FlaggedAt = DateTime.UtcNow;
-            
+
             var flatAuto = mapper.Map<FlatAggregate>(deep);
             Trace.Assert(flatAuto.AddressCity == "La Paz");
             Trace.Assert(flatAuto.AddressRegion == "Bolivia");
@@ -47,6 +51,15 @@ namespace extensions_csharp.AutoMapping
             Trace.Assert(deepAuto.Address.City == deep.Address.City);
             Trace.Assert(deepAuto.Address.Province == deep.Address.Province);
             Trace.Assert(deepAuto.FlaggedAt == null); //<<<< one way only
+
+            var deeps = new EnumerableQuery<DeepAggregate>(new[] {deep, deepAuto});
+            Trace.Assert(1 == deeps.Count(d => d.FlaggedAt != null));
+            var projectedFlats = deeps.ProjectTo<FlatAggregate>(mapper.ConfigurationProvider, a => a.IsFlagged);
+            Trace.Assert(2 == projectedFlats.Count(f => f.AddressRegion == "Bolivia"));
+            Trace.Assert(0 == projectedFlats.Count(f => f.AddressRegion == "Bolognese"));
+            
+            Trace.Assert(1 == projectedFlats.Count(f => f.IsFlagged));
+            Trace.Assert(1 == projectedFlats.Count(f => !f.IsFlagged));
         }
     }
 }
