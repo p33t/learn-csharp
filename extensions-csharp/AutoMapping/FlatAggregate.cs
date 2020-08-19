@@ -6,5 +6,7 @@
         public string AddressRegion { get; set; } = string.Empty;
         public string ExtraField { get; set; }
         public string Surname { get; set; }
+        
+        public bool IsFlagged { get; set; }
     }
 }

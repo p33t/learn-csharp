@@ -26,6 +26,7 @@
             DateTimeOffsets.Demo();
             Casting.Demo();
             Equality.Demo();
+            Expressions.Demo();
         }
     }
 }

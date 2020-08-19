@@ -6,5 +6,7 @@ namespace extensions_csharp.AutoMapping
     {
         public Address Address { get; set; } = new Address();
         public string FamilyName { get; set; } = String.Empty;
+        
+        public DateTime? FlaggedAt { get; set; }
     }
 }
