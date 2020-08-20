@@ -18,7 +18,7 @@ namespace extensions_csharp.AutoMapping
                     .ForMember(dest => dest.AddressRegion, opt => opt.MapFrom(src => src.Address.Province))
                     .ForMember(dest => dest.AddressCity, opt => opt.MapFrom(src => src.Address.City))
                     // Flagging is NOT done via CRUD.  There is specific 'Flag' op that timestamps.  Is one-way mapping.
-                    .ForMember(dest => dest.IsFlagged, opt => opt.MapFrom(src => src.FlaggedAt.HasValue))
+                    .ForMember(dest => dest.IsFlagged, opt => opt.MapFrom(src => src.FlaggedAt != null))
                     // Doesn't seem to affect anything
                     // .ForMember(dest => dest.IsFlagged, opt => opt.ExplicitExpansion())
                     .ReverseMap();
