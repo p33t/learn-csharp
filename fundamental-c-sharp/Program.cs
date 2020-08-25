@@ -27,6 +27,7 @@
             Casting.Demo();
             Equality.Demo();
             Expressions.Demo();
+            Switches.Demo();
         }
     }
 }
