@@ -51,6 +51,16 @@ namespace fundamental_c_sharp
 
             Trace.Assert(optInt! == 99);
             Trace.Assert(opt!.SomeInt! == 33);
+            
+            // map the monad?
+            void fn(string? expStr)
+            {
+                var optStr = optBool.HasValue ? optBool.ToString() : null;
+                Trace.Assert(expStr == optStr);
+            }
+            fn("False");
+            optBool = null;
+            fn(null);
         }
     }
 }
