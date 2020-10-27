@@ -28,6 +28,7 @@
             Equality.Demo();
             Expressions.Demo();
             Switches.Demo();
+            TaskWait.Demo();
         }
     }
 }
