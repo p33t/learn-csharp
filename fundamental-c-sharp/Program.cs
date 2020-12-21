@@ -1,9 +1,11 @@
-﻿namespace fundamental_c_sharp
+﻿using System.Threading.Tasks;
+
+namespace fundamental_c_sharp
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Util.WriteLn("Hello C#");
             Generics.Demo();
@@ -28,7 +30,9 @@
             Equality.Demo();
             Expressions.Demo();
             Switches.Demo();
+            await TaskAsync.Demo();
             TaskWait.Demo();
+            await TaskExceptions.Demo();
         }
     }
 }
