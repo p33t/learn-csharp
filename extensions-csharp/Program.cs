@@ -10,6 +10,7 @@ namespace extensions_csharp
             DependencyInjection.DependencyInjection.Demo();
             Logging.Logging.Demo();
             AutoMapping.AutoMapping.Demo();
+            Validation.Validation.Demo();
             Console.WriteLine("DONE");
         }
     }
