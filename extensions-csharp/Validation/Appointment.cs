@@ -8,6 +8,7 @@ namespace extensions_csharp.Validation
         [Required]
         public string Description { get; set; } = string.Empty;
         
+        [NonNegativePeriod]
         public DateTime FromIn { get; set; }
         
         public DateTime ToEx { get; set; }
