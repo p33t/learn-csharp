@@ -32,6 +32,17 @@ namespace extensions_csharp.Validation
             Debug.Assert(result.Count == 1);
             error0MemberNames = result[0].MemberNames.ToArray();
             Debug.Assert(error0MemberNames.Length == 2);
+            
+            // IValidatableObject
+            model.ToEx = model.FromIn;
+            model.Description = "Bad";
+            result.Clear();
+            Validator.TryValidateObject(model, new ValidationContext(model), result, true);
+            Debug.Assert(result.Count == 1);
+            error0MemberNames = result[0].MemberNames.ToArray();
+            Debug.Assert(error0MemberNames.Length == 1);
+            Debug.Assert(error0MemberNames[0] == "Description");
+            Debug.Assert(result[0].ErrorMessage == "Cannot have 'Bad' description");
         }
     }
 }
