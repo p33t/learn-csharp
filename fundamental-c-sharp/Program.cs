@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace fundamental_c_sharp
 {
@@ -33,6 +34,9 @@ namespace fundamental_c_sharp
             await TaskAsync.Demo();
             TaskWait.Demo();
             await TaskExceptions.Demo();
+            ClassInitialization.Demo();
+
+            Console.WriteLine("Done.");
         }
     }
 }
