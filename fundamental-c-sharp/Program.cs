@@ -36,6 +36,7 @@ namespace fundamental_c_sharp
             await TaskExceptions.Demo();
             // ClassInitialization.Demo();
             DispatchProxying.Demo();
+            await Disposable.Demo();
 
             Console.WriteLine("Done.");
         }
