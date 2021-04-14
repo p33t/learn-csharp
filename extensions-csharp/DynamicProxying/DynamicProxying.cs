@@ -50,6 +50,19 @@ namespace extensions_csharp.DynamicProxying
             }
         }
 
+        // Constructor arg and not a real IHello
+        public class IncumbentSubclass2 : Incumbent, IHello
+        {
+            public IncumbentSubclass2(string stuckWithThis)
+            {
+            }
+
+            public string Hello()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public class MyInterceptor : IInterceptor
         {
             public void Intercept(IInvocation invocation)
@@ -111,6 +124,10 @@ namespace extensions_csharp.DynamicProxying
             altHello = proxyGenerator.CreateInterfaceProxyWithoutTarget<IHello>(options, new MyMetaImpl("Yellow!"));
             Debug.Assert(((Incumbent) altHello).StuckWithThis() == "blah");
             Debug.Assert(altHello.Hello() == "Yellow!");
+
+            // Hmmm.... this isn't going to work.  Seems like we need a no-arg constructor in proxy parent class.
+            var incSub2 = new IncumbentSubclass2("this'll be interesting");
+            proxyGenerator.CreateInterfaceProxyWithTarget(typeof(IHello), incSub2, new MyMetaImpl("Dolly!"));
         }
     }
 }
