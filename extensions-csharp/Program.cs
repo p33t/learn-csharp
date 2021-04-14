@@ -11,6 +11,7 @@ namespace extensions_csharp
             Logging.Logging.Demo();
             AutoMapping.AutoMapping.Demo();
             Validation.Validation.Demo();
+            DynamicProxying.DynamicProxying.Demo();
             Console.WriteLine("DONE");
         }
     }
