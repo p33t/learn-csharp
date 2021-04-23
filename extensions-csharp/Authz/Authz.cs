@@ -54,6 +54,7 @@ namespace extensions_csharp.Authz
                 .Build();
             var authz = CreateAuthorizationService(opts => opts.AddPolicy(nameof(bossesOnly), bossesOnly));
 
+            ////////////////////////// Using a simple named policy
             async Task CheckSimple(ClaimsPrincipal principal, bool expectSuccess)
             {
                 var result = await authz!.AuthorizeAsync(principal, nameof(bossesOnly));
@@ -64,13 +65,14 @@ namespace extensions_csharp.Authz
             await CheckSimple(peon, false);
             await CheckSimple(outsider, false);
 
+            ///////////////////////////// using a custom requirement
             // some expensive command that uses the supplied 'lockerId' parameter.  The result can be used again later
             var fetchLockerOwnerId1 = new Lazy<Task<string>>(() => Task.FromResult("user-1"));
             var fetchLockerOwnerId2 = new Lazy<Task<string>>(() => Task.FromResult("user-2"));
 
             async Task CheckCustom(ClaimsPrincipal principal, Lazy<Task<string>> fetchLockerOwner, bool expectSuccess)
             {
-                var requirements = new []
+                var requirements = new[]
                 {
                     new LockerOwnerRequirement
                     {
@@ -82,7 +84,28 @@ namespace extensions_csharp.Authz
             }
 
             await CheckCustom(boss, fetchLockerOwnerId1, true);
+            await CheckCustom(peon, fetchLockerOwnerId1, true); // no role/issuer checks yet
+            await CheckCustom(outsider, fetchLockerOwnerId1, true); // no role/issuer checks yet
             await CheckCustom(boss, fetchLockerOwnerId2, false);
+
+            /////////////////////// using a combination of requirements (most flexible)
+            async Task CheckCombo(ClaimsPrincipal principal, Lazy<Task<string>> fetchLockerOwner, bool expectSuccess)
+            {
+                var result = await authz!.AuthorizeAsync(principal, new AuthorizationPolicyBuilder()
+                    .RequireClaim("iss", IdentityIssuer)
+                    .RequireRole("Boss")
+                    .AddRequirements(new LockerOwnerRequirement
+                    {
+                        FetchLockerOwnerId = fetchLockerOwner
+                    })
+                    .Build());
+                Debug.Assert(result.Succeeded == expectSuccess);
+            }
+
+            await CheckCombo(boss, fetchLockerOwnerId1, true);
+            await CheckCombo(peon, fetchLockerOwnerId1, false);
+            await CheckCombo(outsider, fetchLockerOwnerId1, false);
+            await CheckCombo(boss, fetchLockerOwnerId2, false);
         }
 
         private static ClaimsPrincipal CreatePrincipal(string identityIssuer, params string[] roles)
