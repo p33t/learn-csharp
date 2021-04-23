@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace extensions_csharp
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Configuration.Configuration.Demo();
             DependencyInjection.DependencyInjection.Demo();
@@ -12,6 +13,7 @@ namespace extensions_csharp
             AutoMapping.AutoMapping.Demo();
             Validation.Validation.Demo();
             DynamicProxying.DynamicProxying.Demo();
+            await Authz.Authz.Demo();
             Console.WriteLine("DONE");
         }
     }
