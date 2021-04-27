@@ -106,6 +106,13 @@ namespace extensions_csharp.Authz
             await CheckCombo(peon, fetchLockerOwnerId1, false);
             await CheckCombo(outsider, fetchLockerOwnerId1, false);
             await CheckCombo(boss, fetchLockerOwnerId2, false);
+
+            //////////////////////// confirm how requirements relate
+            // NOTE: All requirements must be satisfied... but might have multiple handlers, only one of which needs to 'succeed'
+            // var x = await authz.AuthorizeAsync(peon, null, new AuthorizationPolicyBuilder()
+            //     .Combine(bossesOnly)
+            //     .Build());
+            // Debug.Assert(x.Succeeded);
         }
 
         private static ClaimsPrincipal CreatePrincipal(string identityIssuer, params string[] roles)
