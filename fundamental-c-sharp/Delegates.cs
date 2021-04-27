@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace fundamental_c_sharp
 {
@@ -19,7 +20,12 @@ namespace fundamental_c_sharp
         public static void Demo()
         {
             Console.WriteLine("Delegates --------------------");
-            Console.WriteLine($"Expecting 'Hello Bruce':" + Run(Hello, "Bruce"));
+            var output = Run(Hello, "Bruce");
+            // Console.WriteLine($"Expecting 'Hello Bruce':" + output + ".");
+            Debug.Assert(string.Equals("Hello Bruce", output));
+
+            output = Run(s => string.Join(null, s.Reverse()), "Yellow");
+            Debug.Assert(string.Equals("wolleY", output, StringComparison.Ordinal));
         }
     }
 }

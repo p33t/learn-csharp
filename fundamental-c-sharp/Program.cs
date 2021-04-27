@@ -15,7 +15,7 @@ namespace fundamental_c_sharp
             // Constructors.Demo();
             // Polymorphism.Demo();
             // Functions.Demo();
-            // Delegates.Demo();
+            Delegates.Demo();
             // Reflection.DispatchProxy();
             // Reflection.PropertyInvocation();
             // ExtensionMethod.ExtensionMethod.Demo();
