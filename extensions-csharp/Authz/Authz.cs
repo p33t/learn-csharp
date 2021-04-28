@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using NetCore.AutoRegisterDi;
 
@@ -30,6 +31,22 @@ namespace extensions_csharp.Authz
                 if (lockerOwnerId == userId)
                     context.Succeed(requirement);
             }
+        }
+    }
+
+    public class NoPeonsAllowedRequirement : IAuthorizationRequirement
+    {
+    }
+
+    [UsedImplicitly]
+    public class NoPeonsAllowedHandler : AuthorizationHandler<NoPeonsAllowedRequirement>
+    {
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, NoPeonsAllowedRequirement requirement)
+        {
+            if (context.User.HasClaim(ClaimTypes.Role, "Peon"))
+                context.Fail();
+
+            return Task.CompletedTask;
         }
     }
 
@@ -89,7 +106,8 @@ namespace extensions_csharp.Authz
             await CheckCustom(boss, fetchLockerOwnerId2, false);
 
             /////////////////////// using a combination of requirements (most flexible)
-            async Task CheckCombo(ClaimsPrincipal principal, Lazy<Task<string>> fetchLockerOwner, bool expectSuccess)
+            async Task CheckCombo(ClaimsPrincipal principal, Lazy<Task<string>> fetchLockerOwner,
+                params Type[] failedRequirements)
             {
                 var result = await authz!.AuthorizeAsync(principal, new AuthorizationPolicyBuilder()
                     .RequireClaim("iss", IdentityIssuer)
@@ -99,13 +117,17 @@ namespace extensions_csharp.Authz
                         FetchLockerOwnerId = fetchLockerOwner
                     })
                     .Build());
-                Debug.Assert(result.Succeeded == expectSuccess);
+                Debug.Assert(result.Succeeded != failedRequirements.Any());
+                foreach (var requirement in failedRequirements)
+                {
+                    Debug.Assert(result.Failure!.FailedRequirements.Any(r => r.GetType() == requirement));
+                }
             }
 
-            await CheckCombo(boss, fetchLockerOwnerId1, true);
-            await CheckCombo(peon, fetchLockerOwnerId1, false);
-            await CheckCombo(outsider, fetchLockerOwnerId1, false);
-            await CheckCombo(boss, fetchLockerOwnerId2, false);
+            await CheckCombo(boss, fetchLockerOwnerId1);
+            await CheckCombo(peon, fetchLockerOwnerId1, typeof(RolesAuthorizationRequirement));
+            await CheckCombo(outsider, fetchLockerOwnerId1, typeof(ClaimsAuthorizationRequirement));
+            await CheckCombo(boss, fetchLockerOwnerId2, typeof(LockerOwnerRequirement));
 
             //////////////////////// confirm how requirements relate
             // NOTE: All requirements must be satisfied... but might have multiple handlers, only one of which needs to 'succeed'
@@ -113,6 +135,14 @@ namespace extensions_csharp.Authz
             //     .Combine(bossesOnly)
             //     .Build());
             // Debug.Assert(x.Succeeded);
+
+            /////////////////////// Explicit fail
+            var explicitResult = await authz.AuthorizeAsync(peon, null!, new NoPeonsAllowedRequirement());
+            Debug.Assert(!explicitResult.Succeeded);
+            Debug.Assert(explicitResult.Failure!.FailCalled);
+            // Explicit fail seems to make t his collection empty
+            // Debug.Assert(result.Failure!.FailedRequirements.Any(r => r is NoPeonsAllowedRequirement));
+            Debug.Assert(!explicitResult.Failure!.FailedRequirements.Any());
         }
 
         private static ClaimsPrincipal CreatePrincipal(string identityIssuer, params string[] roles)
