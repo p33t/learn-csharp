@@ -41,10 +41,13 @@ namespace extensions_csharp.Authz
     [UsedImplicitly]
     public class NoPeonsAllowedHandler : AuthorizationHandler<NoPeonsAllowedRequirement>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, NoPeonsAllowedRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
+            NoPeonsAllowedRequirement requirement)
         {
             if (context.User.HasClaim(ClaimTypes.Role, "Peon"))
                 context.Fail();
+            else
+                context.Succeed(requirement);
 
             return Task.CompletedTask;
         }
@@ -143,6 +146,31 @@ namespace extensions_csharp.Authz
             // Explicit fail seems to make t his collection empty
             // Debug.Assert(result.Failure!.FailedRequirements.Any(r => r is NoPeonsAllowedRequirement));
             Debug.Assert(!explicitResult.Failure!.FailedRequirements.Any());
+
+            ////////////////////// Each requirement must succeed
+            var impossibleRequirements = new IAuthorizationRequirement[]
+            {
+                new LockerOwnerRequirement {FetchLockerOwnerId = fetchLockerOwnerId1},
+                new LockerOwnerRequirement {FetchLockerOwnerId = fetchLockerOwnerId2}
+            };
+            var multiResult = await authz.AuthorizeAsync(peon, null!, impossibleRequirements);
+            Debug.Assert(!multiResult.Succeeded);
+
+            multiResult = await authz.AuthorizeAsync(peon, null!, new AuthorizationPolicyBuilder()
+                .AddRequirements(impossibleRequirements)
+                .Build());
+            Debug.Assert(!multiResult.Succeeded);
+
+            multiResult = await authz.AuthorizeAsync(peon, null!, new AuthorizationPolicyBuilder()
+                .AddRequirements(impossibleRequirements[0])
+                .AddRequirements(impossibleRequirements[1])
+                .Build());
+            Debug.Assert(!multiResult.Succeeded);
+
+            multiResult = await authz.AuthorizeAsync(peon, null!, new AuthorizationPolicyBuilder()
+                .AddRequirements(impossibleRequirements[0])
+                .Build());
+            Debug.Assert(multiResult.Succeeded); // sanity check
         }
 
         private static ClaimsPrincipal CreatePrincipal(string identityIssuer, params string[] roles)
