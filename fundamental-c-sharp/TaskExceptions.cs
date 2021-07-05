@@ -39,6 +39,17 @@ namespace fundamental_c_sharp
             {
                 Debug.Assert(ex.Message == "Inner message");
             }
+
+            // conditional continue
+            try
+            {
+                await BadOp().ContinueWith(task => Task.CompletedTask, TaskContinuationOptions.NotOnFaulted);
+            }
+            catch (Exception ex)
+            {
+                // Can't seem to get original exception.... Debug.Assert(ex.Message == "Inner message");
+                Debug.Assert(ex.Message == "A task was canceled.");
+            }
         }
     }
 }
