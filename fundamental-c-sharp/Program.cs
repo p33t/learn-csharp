@@ -15,7 +15,7 @@ namespace fundamental_c_sharp
             // Constructors.Demo();
             // Polymorphism.Demo();
             // Functions.Demo();
-            Delegates.Demo();
+            // Delegates.Demo();
             // Reflection.DispatchProxy();
             // Reflection.PropertyInvocation();
             // ExtensionMethod.ExtensionMethod.Demo();
@@ -26,6 +26,7 @@ namespace fundamental_c_sharp
             // PartialClass.PartialClass.Demo();
             // Attributes.Attributes.Demo();
             // DateTimes.Demo();
+            DateTimes2.Demo();
             // DateTimeOffsets.Demo();
             // Casting.Demo();
             // Equality.Demo();
@@ -33,10 +34,10 @@ namespace fundamental_c_sharp
             // Switches.Demo();
             // await TaskAsync.Demo();
             // TaskWait.Demo();
-            await TaskExceptions.Demo();
+            // await TaskExceptions.Demo();
             // ClassInitialization.Demo();
-            DispatchProxying.Demo();
-            await Disposable.Demo();
+            // DispatchProxying.Demo();
+            // await Disposable.Demo();
 
             Console.WriteLine("Done.");
         }
