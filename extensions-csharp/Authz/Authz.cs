@@ -14,7 +14,7 @@ namespace extensions_csharp.Authz
 {
     public class LockerOwnerRequirement : IAuthorizationRequirement
     {
-        public Lazy<Task<string>> FetchLockerOwnerId { get; init; } = new();
+        public Lazy<Task<string>> FetchLockerOwnerId = new();
     }
 
     // this gets loaded automagically with RegisterAssemblyPublicNonGenericClasses... but it can't be a nested class
