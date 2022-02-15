@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Diagnostics;
 using System.IO;
 
 namespace fundamental_c_sharp
@@ -10,9 +9,10 @@ namespace fundamental_c_sharp
         public static void Demo()
         {
             Console.WriteLine(" Task Await =================================");
-            var task = File.ReadAllTextAsync("fundamental-c-sharp.deps.json");
+            var filePath = "fundamental-c-sharp.deps.json";
+            var task = File.ReadAllTextAsync(filePath);
             task.Wait();
-            Console.Write(task.Result);
+            Console.WriteLine($"Loaded {task.Result.Length} chars from file {filePath}");
         }
     }
 }

@@ -30,17 +30,20 @@ namespace fundamental_c_sharp
         public static async Task Demo()
         {
             Util.WriteLn("Creating sansAsync()");
-            var sans = sansAsync().ContinueWith(t => Util.WriteLn($"Finished {t.Result}"));
-            Util.WriteLn("Delay");
+            var sans = sansAsync().ContinueWith(t => Util.WriteLn($"1) Finished {t.Result}"));
+            Util.WriteLn("Delay 1");
             await Task.Delay(1100);
+            
             Util.WriteLn("Creating withAsync()");
-            var with = withAsync().ContinueWith(t => Util.WriteLn($"Finished {t.Result}"));
+            var with = withAsync().ContinueWith(t => Util.WriteLn($"2) Finished {t.Result}"));
             Util.WriteLn("Delay 2");
             await Task.Delay(1100);
+            
             Util.WriteLn("Creating unstarted()");
-            var un = unstarted().ContinueWith(t => Util.WriteLn($"Finished {t.Result}"));
+            var un = unstarted().ContinueWith(t => Util.WriteLn($"3) Finished {t.Result}"));
             Util.WriteLn("Delay 3");
             await Task.Delay(1100);
+            
             Util.WriteLn("Manually starting 'un' NOOOOOT... don't know how to do this.");
             
             // Exception: Start may not be called on a continuation task.
@@ -54,6 +57,7 @@ namespace fundamental_c_sharp
 
             Util.WriteLn("Delay 4");
             await Task.Delay(1100);
+            
             Util.WriteLn("TaskAsync finished");
         }
     }
