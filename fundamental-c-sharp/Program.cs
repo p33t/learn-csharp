@@ -26,7 +26,7 @@ namespace fundamental_c_sharp
             // PartialClass.PartialClass.Demo();
             // Attributes.Attributes.Demo();
             // DateTimes.Demo();
-            DateTimes2.Demo();
+            // DateTimes2.Demo();
             // DateTimeOffsets.Demo();
             // Casting.Demo();
             // Equality.Demo();
@@ -38,6 +38,8 @@ namespace fundamental_c_sharp
             // ClassInitialization.Demo();
             // DispatchProxying.Demo();
             // await Disposable.Demo();
+
+            await Tasks.DemoAsync();
 
             Console.WriteLine("Done.");
         }
