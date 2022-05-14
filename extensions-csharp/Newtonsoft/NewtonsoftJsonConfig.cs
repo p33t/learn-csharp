@@ -43,6 +43,10 @@ namespace extensions_csharp.Newtonsoft
             Trace.Assert(v11Alt.NameFilterDef is EligibleList);
             Trace.Assert(((EligibleList) v11.NameFilterDef).Eligible.Count
                          == ((EligibleList) v11Alt.NameFilterDef).Eligible.Count);
+            // This has "$type" & "$values" fields in the resulting EligibleList.Eligible value
+            // var json11Alt = JsonConvert.SerializeObject(v11Alt, serializerSettings);
+            // Console.WriteLine("Alternate JSON:\n " + json11Alt);
+            // Trace.Assert(json11Alt.Equals(json11));
             
             // 'Prefixed' name filter config
             var v12 = new TestConfig

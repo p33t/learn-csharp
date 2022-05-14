@@ -10,7 +10,7 @@ namespace extensions_csharp.Newtonsoft
     public class SimplifiedSerializationBinder : ISerializationBinder
     {
         private readonly Type _sampleClass;
-        readonly ISerializationBinder _fallback;
+        private readonly ISerializationBinder _fallback;
 
         public SimplifiedSerializationBinder(Type sampleClass, ISerializationBinder fallback)
         {
@@ -20,6 +20,7 @@ namespace extensions_csharp.Newtonsoft
 
         public void BindToName(Type serializedType, out string assemblyName, out string typeName)
         {
+            // Note: ..Assembly.GetName() cannot be compared ?!
             if (serializedType.Assembly.Equals(_sampleClass.Assembly) &&
                 string.Equals(serializedType.Namespace, _sampleClass.Namespace, StringComparison.Ordinal))
             {
