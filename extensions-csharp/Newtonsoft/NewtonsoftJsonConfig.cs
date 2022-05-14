@@ -23,6 +23,7 @@ namespace extensions_csharp.Newtonsoft
                 SerializationBinder = new SimplifiedSerializationBinder(typeof(NameFilterDef), new DefaultSerializationBinder())
             };
 
+            // 'EligibleList' name filter config
             var v11 = new TestConfig
             {
                 Name = "#1",
@@ -30,22 +31,35 @@ namespace extensions_csharp.Newtonsoft
                 {
                     Eligible = new List<string>
                     {
-                        "elem1",
-                        "elem2"
+                        "Bruce Lee",
+                        "Bruce Wayne"
                     }
                 }
             };
-
-            var json = JsonConvert.SerializeObject(v11, serializerSettings);
-            Console.WriteLine("Resulting JSON:\n " + json);
-
-            var v11Alt = JsonConvert.DeserializeObject<TestConfig>(json, serializerSettings);
-
+            var json11 = JsonConvert.SerializeObject(v11, serializerSettings);
+            Console.WriteLine("Resulting JSON:\n " + json11);
+            var v11Alt = JsonConvert.DeserializeObject<TestConfig>(json11, serializerSettings);
             Trace.Assert(v11.Name == v11Alt!.Name);
             Trace.Assert(v11Alt.NameFilterDef is EligibleList);
-
             Trace.Assert(((EligibleList) v11.NameFilterDef).Eligible.Count
                          == ((EligibleList) v11Alt.NameFilterDef).Eligible.Count);
+            
+            // 'Prefixed' name filter config
+            var v12 = new TestConfig
+            {
+                Name = "#2",
+                NameFilterDef = new Prefixed
+                {
+                    Prefix = "Bruce "
+                }
+            };
+            var json12 = JsonConvert.SerializeObject(v12, serializerSettings);
+            var v12Alt = JsonConvert.DeserializeObject<TestConfig>(json12, serializerSettings);
+            Trace.Assert(v12.Name == v12Alt!.Name);
+            Trace.Assert(v12Alt.NameFilterDef is Prefixed);
+            Trace.Assert(((Prefixed) v12.NameFilterDef).Prefix
+                         == ((Prefixed) v12Alt.NameFilterDef).Prefix);
+            
         }
     }
 }
