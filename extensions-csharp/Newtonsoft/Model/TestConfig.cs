@@ -11,6 +11,6 @@ namespace extensions_csharp.Newtonsoft.Model
         public string Name { get; set; }
 
         [Required] 
-        public Component1Config Component1 { get; set; }
+        public NameFilterDef NameFilterDef { get; set; }
     }
 }
