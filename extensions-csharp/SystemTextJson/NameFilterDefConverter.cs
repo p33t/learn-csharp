@@ -5,9 +5,9 @@ using extensions_csharp.SystemTextJson.Model;
 
 namespace extensions_csharp.SystemTextJson
 {
-    public class TestConfigConverter : JsonConverter<TestConfig>
+    public class NameFilterDefConverter : JsonConverter<NameFilterDef>
     {
-        public override TestConfig Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override NameFilterDef Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             Utf8JsonReader readerClone = reader;
 
@@ -23,27 +23,28 @@ namespace extensions_csharp.SystemTextJson
             }
 
             string? propertyName = readerClone.GetString();
-            if (propertyName != nameof(TestConfig.FormatVersion))
+            if (propertyName != nameof(NameFilterDef.Subtype))
             {
                 throw new JsonException();
             }
 
             readerClone.Read();
-            if (readerClone.TokenType != JsonTokenType.Number)
+            if (readerClone.TokenType != JsonTokenType.String)
             {
                 throw new JsonException();
             }
 
-            var formatVersion = readerClone.GetInt32();
+            var subtype = readerClone.GetString();
 
-            return formatVersion switch
+            return subtype switch
             {
-                1 => JsonSerializer.Deserialize<TestConfigV1>(ref reader, options),
-                _ => throw new Exception($"Unrecognised format version: {formatVersion}")
+                nameof(EligibleList) => JsonSerializer.Deserialize<EligibleList>(ref reader, options),
+                nameof(Prefixed) => JsonSerializer.Deserialize<Prefixed>(ref reader, options),
+                _ => throw new Exception($"Unrecognised sub type: {subtype}")
             };
         }
 
-        public override void Write(Utf8JsonWriter writer, TestConfig value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, NameFilterDef value, JsonSerializerOptions options)
         {
             JsonSerializer.Serialize(writer, value, value.GetType(), options);
         }

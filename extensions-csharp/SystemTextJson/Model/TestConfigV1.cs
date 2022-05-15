@@ -13,8 +13,8 @@ namespace extensions_csharp.SystemTextJson.Model
         [MinLength(2)]
         [MaxLength(40)]
         public string Name { get; set; } = string.Empty;
-        //
-        // [Required] 
-        // public NameFilterDef NameFilterDef { get; set; }
+        
+        [Required] 
+        public NameFilterDef NameFilterDef { get; set; }
     }
 }
