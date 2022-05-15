@@ -5,7 +5,7 @@ namespace extensions_csharp.Newtonsoft.Model
     /// <summary>
     /// Configuration format version 1
     /// </summary>
-    public class TestConfig
+    public class TestConfigV1
     {
         [Required]
         [MinLength(2)]
