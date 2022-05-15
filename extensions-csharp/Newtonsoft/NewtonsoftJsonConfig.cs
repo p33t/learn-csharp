@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using extensions_csharp.Newtonsoft.Model;
@@ -46,6 +47,7 @@ namespace extensions_csharp.Newtonsoft
                     }
                 }
             };
+            AssertValid(v11);
             var json11 = JsonConvert.SerializeObject(v11, serializerSettings);
             Console.WriteLine("Resulting JSON:\n " + json11);
             var v11Alt = JsonConvert.DeserializeObject<TestConfig>(json11, serializerSettings);
@@ -67,6 +69,7 @@ namespace extensions_csharp.Newtonsoft
                     Prefix = "Bruce "
                 }
             };
+            AssertValid(v12);
             var json12 = JsonConvert.SerializeObject(v12, serializerSettings);
             var v12Alt = JsonConvert.DeserializeObject<TestConfig>(json12, serializerSettings);
             Trace.Assert(v12.Name == v12Alt!.Name);
@@ -74,6 +77,39 @@ namespace extensions_csharp.Newtonsoft
             Trace.Assert(((Prefixed) v12.NameFilterDef).Prefix
                          == ((Prefixed) v12Alt.NameFilterDef).Prefix);
             
+            // Data validation... is really a separate thing.
+            var v13 = JsonConvert.DeserializeObject<TestConfig>("{}", serializerSettings);
+            Trace.Assert(v13 != null);
+            AssertInvalid(v13!);
+            var v14 = new TestConfig
+            {
+                Name = "#4",
+                NameFilterDef = new Prefixed
+                {
+                    Prefix = "x" // too short
+                }
+            };
+            // Doesn't work....is only shallow validation
+            // AssertInvalid(v14);
+        }
+
+        private static void AssertValid(TestConfig config)
+        {
+            var errors = Validate(config);
+            Trace.Assert(!errors.Any(), 
+                $"Got {errors.Count} errors: {string.Join('\n', errors)}");
+        }
+
+        private static void AssertInvalid(TestConfig config)
+        {
+            Trace.Assert(Validate(config).Count > 0, "No errors");
+        }
+        
+        private static List<string> Validate(TestConfig config)
+        {
+            var result = new List<ValidationResult>();
+            Validator.TryValidateObject(config, new ValidationContext(config), result, true);
+            return result.Select(r => r.ErrorMessage).ToList();
         }
     }
 }

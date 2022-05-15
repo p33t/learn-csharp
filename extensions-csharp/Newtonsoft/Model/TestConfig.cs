@@ -7,8 +7,10 @@ namespace extensions_csharp.Newtonsoft.Model
     /// </summary>
     public class TestConfig
     {
-        [Required] 
-        public string Name { get; set; }
+        [Required]
+        [MinLength(2)]
+        [MaxLength(40)]
+        public string Name { get; set; } = string.Empty;
 
         [Required] 
         public NameFilterDef NameFilterDef { get; set; }
