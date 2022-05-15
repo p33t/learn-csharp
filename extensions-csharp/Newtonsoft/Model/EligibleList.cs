@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace extensions_csharp.Newtonsoft.Model
 {
+    /// <summary>
+    /// Indicates an implementation of NameFilterDef that defines eligible names explicitly.
+    /// </summary>
     public class EligibleList : NameFilterDef
     {
         [Required]

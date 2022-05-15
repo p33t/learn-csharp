@@ -17,6 +17,12 @@ namespace extensions_csharp.Newtonsoft
         /// <summary>
         /// Writing & Loading a structured JSON configuration file.
         /// </summary>
+        /// Notes:
+        ///   Am able to read and write nested polymorphic structures with custom $type values
+        ///     The '$type' field is not easily changed.
+        ///     This include a top-level config format versioning feature
+        ///   Stopped short of writing Converters and low-level [de]serialization
+        ///   Schema generation (and resulting validation) do not work with polymorphism as it is done here.
         public static void Demo()
         {
             Tuple<string, Type>[] binds =
@@ -48,6 +54,7 @@ namespace extensions_csharp.Newtonsoft
             // schemaV1.WriteTo(new JsonTextWriter(Console.Out));
             // Console.WriteLine();
             
+            // Returns a JSON string from serializing the given TestConfig
             string SerializeTestConfig(TestConfig config) =>
                 JsonConvert.SerializeObject(config, typeof(TestConfig), serializerSettings);
 
