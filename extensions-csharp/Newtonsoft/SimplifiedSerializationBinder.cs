@@ -4,40 +4,38 @@ using Newtonsoft.Json.Serialization;
 namespace extensions_csharp.Newtonsoft
 {
     /// <summary>
-    /// Keeps the '$type' field in polymorphic JSON simple.
-    /// Adapted from https://stackoverflow.com/a/49287052/358006
+    /// Uses supplied mapping functions and a fallback binder to allow simple names for polymorphic '$type' field.
     /// </summary>
     public class SimplifiedSerializationBinder : ISerializationBinder
     {
-        private readonly Type _sampleClass;
+        private readonly Func<Type, string?> _typeStringFn;
+        private readonly Func<string, Type?> _resolveFn;
         private readonly ISerializationBinder _fallback;
 
-        public SimplifiedSerializationBinder(Type sampleClass, ISerializationBinder fallback)
+        public SimplifiedSerializationBinder(Func<Type, string?> typeStringFn, Func<string, Type?> resolveFn, ISerializationBinder fallback)
         {
-            _sampleClass = sampleClass;
-            _fallback = fallback ?? throw new ArgumentNullException();
+            _typeStringFn = typeStringFn;
+            _resolveFn = resolveFn;
+            _fallback = fallback;
         }
 
-        public void BindToName(Type serializedType, out string assemblyName, out string typeName)
+        public void BindToName(Type serializedType, out string? assemblyName, out string? typeName)
         {
-            // Note: ..Assembly.GetName() cannot be compared ?!
-            if (serializedType.Assembly.Equals(_sampleClass.Assembly) &&
-                string.Equals(serializedType.Namespace, _sampleClass.Namespace, StringComparison.Ordinal))
+            var typeString = _typeStringFn(serializedType);
+            if (typeString == null)
             {
-                typeName = serializedType.Name;
-                assemblyName = null!;
+                _fallback.BindToName(serializedType, out assemblyName, out typeName);
             }
             else
             {
-                _fallback.BindToName(serializedType, out assemblyName!, out typeName!);
+                typeName = typeString;
+                assemblyName = null;
             }
         }
 
         public Type BindToType(string? assemblyName, string typeName)
         {
-            return string.IsNullOrEmpty(assemblyName)
-                ? Type.GetType($"{_sampleClass.Namespace}.{typeName}, {_sampleClass.Assembly.GetName()}")!
-                : _fallback.BindToType(assemblyName, typeName);
+            return _resolveFn(typeName) ?? _fallback.BindToType(assemblyName, typeName);
         }
     }
 }

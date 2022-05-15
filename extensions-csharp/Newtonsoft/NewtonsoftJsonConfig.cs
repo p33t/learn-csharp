@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Transactions;
+using System.Linq;
 using extensions_csharp.Newtonsoft.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -15,12 +15,22 @@ namespace extensions_csharp.Newtonsoft
         /// </summary>
         public static void Demo()
         {
+            Tuple<string, Type>[] binds = 
+            {
+                new("Prefixed", typeof(Prefixed)),
+                new("EligibleList", typeof(EligibleList)),
+            };
+            
             var serializerSettings = new JsonSerializerSettings
             {
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
                 // enables saving of $type fields where necessary
                 TypeNameHandling = TypeNameHandling.Auto,
-                SerializationBinder = new SimplifiedSerializationBinder(typeof(NameFilterDef), new DefaultSerializationBinder())
+                SerializationBinder = new SimplifiedSerializationBinder(
+                    serializedType => binds.FirstOrDefault(t2 => t2.Item2 == serializedType)?.Item1, 
+                    typeString => binds.FirstOrDefault(t2 => t2.Item1 == typeString)?.Item2, 
+                    new DefaultSerializationBinder()
+                    )
             };
 
             // 'EligibleList' name filter config
