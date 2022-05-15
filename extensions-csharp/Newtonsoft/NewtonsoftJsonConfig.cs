@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using extensions_csharp.Newtonsoft.Model;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Schema;
+using Newtonsoft.Json.Schema.Generation;
 using Newtonsoft.Json.Serialization;
 
 namespace extensions_csharp.Newtonsoft
@@ -16,25 +19,26 @@ namespace extensions_csharp.Newtonsoft
         /// </summary>
         public static void Demo()
         {
-            Tuple<string, Type>[] binds = 
+            Tuple<string, Type>[] binds =
             {
                 new("Prefixed", typeof(Prefixed)),
                 new("EligibleList", typeof(EligibleList)),
             };
-            
+
             var serializerSettings = new JsonSerializerSettings
             {
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
                 // enables saving of $type fields where necessary
                 TypeNameHandling = TypeNameHandling.Auto,
                 SerializationBinder = new SimplifiedSerializationBinder(
-                    serializedType => binds.FirstOrDefault(t2 => t2.Item2 == serializedType)?.Item1, 
-                    typeString => binds.FirstOrDefault(t2 => t2.Item1 == typeString)?.Item2, 
+                    serializedType => binds.FirstOrDefault(t2 => t2.Item2 == serializedType)?.Item1,
+                    typeString => binds.FirstOrDefault(t2 => t2.Item1 == typeString)?.Item2,
                     new DefaultSerializationBinder()
-                    )
+                )
             };
 
-            // 'EligibleList' name filter config
+
+            // 'EligibleList' name filter config ===================================================================
             var v11 = new TestConfig
             {
                 Name = "#1",
@@ -59,8 +63,8 @@ namespace extensions_csharp.Newtonsoft
             // var json11Alt = JsonConvert.SerializeObject(v11Alt, serializerSettings);
             // Console.WriteLine("Alternate JSON:\n " + json11Alt);
             // Trace.Assert(json11Alt.Equals(json11));
-            
-            // 'Prefixed' name filter config
+
+            // 'Prefixed' name filter config =====================================================================
             var v12 = new TestConfig
             {
                 Name = "#2",
@@ -76,8 +80,9 @@ namespace extensions_csharp.Newtonsoft
             Trace.Assert(v12Alt.NameFilterDef is Prefixed);
             Trace.Assert(((Prefixed) v12.NameFilterDef).Prefix
                          == ((Prefixed) v12Alt.NameFilterDef).Prefix);
-            
-            // Data validation... is really a separate thing.
+
+
+            // Data validation of C# object... is really a separate thing.==========================================
             var v13 = JsonConvert.DeserializeObject<TestConfig>("{}", serializerSettings);
             Trace.Assert(v13 != null);
             AssertInvalid(v13!);
@@ -91,12 +96,40 @@ namespace extensions_csharp.Newtonsoft
             };
             // Doesn't work....is only shallow validation
             // AssertInvalid(v14);
+            var json14 = JsonConvert.SerializeObject(v14);
+
+            
+            // validation during parse ============================================================================
+            var schema = new JSchemaGenerator().Generate(typeof(TestConfig));
+
+            JSchemaValidatingReader ValidatingReader(string s) => new(new JsonTextReader(new StringReader(s)))
+            {
+                Schema = schema
+            };
+
+            var serializer = JsonSerializer.Create(serializerSettings);
+            var v11Valid = serializer.Deserialize<TestConfig>(ValidatingReader(json11));
+            Trace.Assert(v11Valid != null);
+            Trace.Assert(v11Valid!.Name.Equals(v11.Name));
+            var v12Valid = serializer.Deserialize<TestConfig>(ValidatingReader(json12));
+            Trace.Assert(v12Valid != null);
+            Trace.Assert(v12Valid!.Name.Equals(v12.Name));
+            Trace.Assert(v12Valid.NameFilterDef is Prefixed);
+            try
+            {
+                var v14Valid = serializer.Deserialize<TestConfig>(ValidatingReader(json14));
+                Trace.Fail($"Should not have successfully validated {json14}");
+            }
+            catch (JsonSerializationException ex)
+            {
+                Trace.Assert(ex.Path == "NameFilterDef.Prefix");
+            }
         }
 
         private static void AssertValid(TestConfig config)
         {
             var errors = Validate(config);
-            Trace.Assert(!errors.Any(), 
+            Trace.Assert(!errors.Any(),
                 $"Got {errors.Count} errors: {string.Join('\n', errors)}");
         }
 
@@ -104,7 +137,7 @@ namespace extensions_csharp.Newtonsoft
         {
             Trace.Assert(Validate(config).Count > 0, "No errors");
         }
-        
+
         private static List<string> Validate(TestConfig config)
         {
             var result = new List<ValidationResult>();
