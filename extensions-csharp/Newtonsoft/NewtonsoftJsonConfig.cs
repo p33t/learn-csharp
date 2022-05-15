@@ -23,6 +23,10 @@ namespace extensions_csharp.Newtonsoft
         ///     This include a top-level config format versioning feature
         ///   Stopped short of writing Converters and low-level [de]serialization
         ///   Schema generation (and resulting validation) do not work with polymorphism as it is done here.
+        ///   Maybe C# data validations would be enough (and don't worry about JSON Schema)
+        ///     Potentially write an attribute that will recurse down into objects and perform validation (not done by default)
+        ///   Skipping built-in polymorphism handling in favour of roll-your-own might be a better option too
+        ///     See SystemTextJsonConfig.cs for example of roll-your-own polymorphism support
         public static void Demo()
         {
             Tuple<string, Type>[] binds =

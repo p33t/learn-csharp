@@ -12,6 +12,9 @@ namespace extensions_csharp.SystemTextJson
         /// </summary>
         /// Need to roll-your-own polymorphism.
         ///   See https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to?pivots=dotnet-core-3-1#an-alternative-way-to-do-polymorphic-deserialization
+        ///   Works pretty well!
+        /// No validation at this point. Can prob use conventional annotations-based validation.
+        ///   Potentially write an attribute that will recurse down into objects and perform validation (not done by default)
         public static void Demo()
         {
             var options = new JsonSerializerOptions();
