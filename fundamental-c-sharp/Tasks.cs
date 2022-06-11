@@ -67,7 +67,7 @@ namespace fundamental_c_sharp
                 await failed2;
                 throw new Exception("Should not reach here");
             }
-            catch (ApplicationException e)
+            catch (ApplicationException)
             {
                 // expected
             }
@@ -91,7 +91,7 @@ namespace fundamental_c_sharp
                 await delayed5;
                 throw new Exception("Should not reach here");
             }
-            catch (TaskCanceledException e)
+            catch (TaskCanceledException)
             {
                 // expected
             }
@@ -104,7 +104,7 @@ namespace fundamental_c_sharp
                 await delayed6;
                 throw new Exception("Should not reach here");
             }
-            catch (TaskCanceledException e)
+            catch (TaskCanceledException)
             {
                 // expected
             }
