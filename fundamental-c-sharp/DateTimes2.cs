@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace fundamental_c_sharp
 {
@@ -29,6 +30,13 @@ namespace fundamental_c_sharp
             // To obtain an ISO 8601 string in this scenario entails assigning the kind before using ToString("O")
             var iso8601 = DateTime.SpecifyKind(unspecifiedCalendarDate, DateTimeKind.Utc).ToString("O");
             Debug.Assert("2021-09-01T00:00:00.0000000Z" == iso8601);
+            
+            // This was causing a 'stack overflow' on a build server (which was presumably in UTC timezone)
+            // I assume it was this. If the SO was on the server then ASP has some major problems.
+            // problem was with DateTime.Now actually, but I assume  that is equiv to 'local'
+            // Hmm... cannot change default timezone of a .NET process :( https://stackoverflow.com/a/15472422/358006
+            var shortIso = localCalendarDate.ToString("yyyy-MM-ddTHH:mm:ssK");
+            Debug.Assert("2021-09-01T00:00:00-07:00" == shortIso);
         }
     }
 }
