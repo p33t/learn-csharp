@@ -6,7 +6,7 @@ namespace fundamental_c_sharp
     // ReSharper disable once ClassNeverInstantiated.Global
     class Program
     {
-        static async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             // Util.WriteLn("Hello C#");
             // Generics.Demo();
@@ -39,7 +39,8 @@ namespace fundamental_c_sharp
             // DispatchProxying.Demo();
             // await Disposable.Demo();
 
-            await Tasks.DemoAsync();
+            // await Tasks.DemoAsync();
+            Proxying.Demo();
 
             Console.WriteLine("Done.");
         }

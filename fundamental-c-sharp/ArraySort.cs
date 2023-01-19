@@ -5,7 +5,7 @@ namespace fundamental_c_sharp
 {
     public static class ArraySort
     {
-        public static void Main(string[] args)
+        public static void Demo()
         {
             var arr = new[] {1, 3, 5, 7, 9};
 
