@@ -40,7 +40,9 @@ namespace fundamental_c_sharp
             // await Disposable.Demo();
 
             // await Tasks.DemoAsync();
-            Proxying.Demo();
+            // Proxying.Demo();
+            
+            Collections.Demo();
 
             Console.WriteLine("Done.");
         }
