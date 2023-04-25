@@ -42,7 +42,8 @@ namespace fundamental_c_sharp
             // await Tasks.DemoAsync();
             // Proxying.Demo();
             // Collections.Demo();
-            DateTimes3.Demo();
+            // DateTimes3.Demo();
+            FileHandling.Demo();
 
             Console.WriteLine("Done.");
         }
