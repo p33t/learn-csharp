@@ -10,8 +10,12 @@ IConfiguration configuration = new ConfigurationBuilder()
 // Basic JSON   =============================================
 Trace.Assert("Value1" == configuration["Key1"]);
 
+// load an entire section
 var section1 = configuration.GetSection("Section1");
 Trace.Assert("Value11" == section1["Key11"]);
+
+// read direct into section
+Trace.Assert("Value11" == configuration["Section1:Key11"]);
 
 
 // Supplied by environment var ==============================
@@ -22,8 +26,11 @@ Trace.Assert("Value21" == section2["Key21"]);
 
 
 // Supplied via command line arg ============================
-// Needs these 2 command line args: --Key2 Value2
+// Needs 2 command line args: --Key2 Value2
 Trace.Assert("Value2" == configuration["Key2"]);
 
+// needs 2 command line args: --Section2__Key22 Value22
+Trace.Assert("Value22" == configuration["Section2__Key22"]);
+//Cannot seem to influence a Section with command line... Trace.Assert("Value22" == section2["Key22"]);
 
 Console.WriteLine("Tests have succeeded.");
