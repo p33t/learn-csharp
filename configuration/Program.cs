@@ -4,10 +4,7 @@ using Microsoft.Extensions.Configuration;
 IConfiguration configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json") //, optional: true, reloadOnChange: true)
     .AddEnvironmentVariables()
-    // .AddCommandLine(args, new Dictionary<string, string>
-    // {
-    //     {"--log-level", "Serilog__MinimumLevel"}
-    // })
+    .AddCommandLine(args)
     .Build();
 
 // Basic JSON   =============================================
@@ -22,6 +19,11 @@ Trace.Assert("Value11" == section1["Key11"]);
 // Section2__Key21=Value21
 var section2 = configuration.GetSection("Section2");
 Trace.Assert("Value21" == section2["Key21"]);
+
+
+// Supplied via command line arg ============================
+// Needs these 2 command line args: --Key2 Value2
+Trace.Assert("Value2" == configuration["Key2"]);
 
 
 Console.WriteLine("Tests have succeeded.");
