@@ -29,8 +29,7 @@ Trace.Assert("Value21" == section2["Key21"]);
 // Needs 2 command line args: --Key2 Value2
 Trace.Assert("Value2" == configuration["Key2"]);
 
-// needs 2 command line args: --Section2__Key22 Value22
-Trace.Assert("Value22" == configuration["Section2__Key22"]);
-//Cannot seem to influence a Section with command line... Trace.Assert("Value22" == section2["Key22"]);
+// needs 2 command line args: --Section2:Key22 Value22
+Trace.Assert("Value22" == section2["Key22"]);
 
 Console.WriteLine("Tests have succeeded.");
