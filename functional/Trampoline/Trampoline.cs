@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Immutable;
 
 namespace functional.Trampoline;
@@ -31,15 +32,95 @@ public class Trampoline
         IEnumerable<ImmutableStack<Node>> FindPaths(Node node, ImmutableStack<Node> pathSoFar)
         {
             var nextPathSoFar = pathSoFar.Push(node);
-            return node.Children.Any() ?
+            return node.Children.Any()
                 // vertex node
-                node.Children.SelectMany(child => FindPaths(child, nextPathSoFar)) :
+                ? node.Children.SelectMany(child => FindPaths(child, nextPathSoFar))
                 // leaf node
-                new[] { nextPathSoFar };
+                : new[] { nextPathSoFar };
         }
 
         Console.WriteLine("Recursive solution:");
-        foreach (var path in FindPaths(root, ImmutableStack<Node>.Empty))
+        var recursivePaths = FindPaths(root, ImmutableStack<Node>.Empty);
+        OutputPaths(recursivePaths);
+
+        // Trampoline (sort of)
+        // Will have another dimension; trampoline will be used to find the 'next' element in an iterator.
+        // State must be maintained between elements.
+
+        (ImmutableStack<Args>, ImmutableStack<Node>?) CyclePath(ImmutableStack<Args> walkState)
+        {
+            if (walkState.IsEmpty)
+            {
+                throw new ArgumentException("WalkState should not be empty", nameof(walkState));
+            }
+
+            var head = walkState.Peek();
+            if (head.IsLeaf)
+            {
+                using var disposeHead = head;
+                return (walkState.Pop(), head.Path);
+            }
+
+            if (head.RemainingPeers.MoveNext())
+            {
+                // more children left
+                var nextNode = head.RemainingPeers.Current;
+                var nextArg = new Args(nextNode, head.Path); // will get disposed later
+                var nextWalkState = walkState.Push(nextArg);
+                
+                // response indicates no path on this round but need to bounce again
+                return (nextWalkState, null);
+            }
+
+            {
+                // no more children
+                using var disposeHead = head;
+                return (walkState.Pop(), null);
+            }
+        }
+
+        IEnumerable<ImmutableStack<Node>> FindPaths2()
+        {
+            using var rootArgs = new Args(root, ImmutableStack<Node>.Empty);
+            var walkState = ImmutableStack<Args>.Empty.Push(rootArgs);
+            while (walkState.Any())
+            {
+                // still walking the tree
+                var (nextWalkState, path) = CyclePath(walkState);
+                walkState = nextWalkState;
+                if (path != null)
+                {
+                    // found a leaf node
+                    yield return path;
+                }
+            }
+        }
+
+        OutputPaths(FindPaths2());
+    }
+
+    public class Args : IDisposable
+    {
+        public readonly ImmutableStack<Node> Path;
+        public readonly IEnumerator<Node> RemainingPeers;
+        public readonly bool IsLeaf; 
+        
+        public Args(Node node, ImmutableStack<Node> parentPath)
+        {
+            Path = parentPath.Push(node);
+            RemainingPeers = node.Children.GetEnumerator();
+            IsLeaf = !node.Children.Any();
+        }
+
+        public void Dispose()
+        {
+            RemainingPeers.Dispose();
+        }
+    }
+    
+    private static void OutputPaths(IEnumerable<ImmutableStack<Node>> recursivePaths)
+    {
+        foreach (var path in recursivePaths)
         {
             Console.WriteLine(String.Join('-', path.Reverse().Select(n => n.Id.ToString())));
         }
