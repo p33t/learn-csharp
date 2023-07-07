@@ -27,6 +27,16 @@ public class Trampoline
             }
         };
 
+        // increase depth. Only Trampoline solution can handle this
+        // root = new Node();
+        // for (int i = 0; i < 1_000_000; i++)
+        // {
+        //     root = new Node
+        //     {
+        //         Children = new[] { root }
+        //     };
+        // }
+
 
         // Recursive solution
         IEnumerable<ImmutableStack<Node>> FindPaths(Node node, ImmutableStack<Node> pathSoFar)
@@ -40,8 +50,7 @@ public class Trampoline
         }
 
         Console.WriteLine("Recursive solution:");
-        var recursivePaths = FindPaths(root, ImmutableStack<Node>.Empty);
-        OutputPaths(recursivePaths);
+        OutputPaths(FindPaths(root, ImmutableStack<Node>.Empty));
 
         // Trampoline (sort of)
         // Will have another dimension; trampoline will be used to find the 'next' element in an iterator.
@@ -67,7 +76,7 @@ public class Trampoline
                 var nextNode = head.RemainingPeers.Current;
                 var nextArg = new Args(nextNode, head.Path); // will get disposed later
                 var nextWalkState = walkState.Push(nextArg);
-                
+
                 // response indicates no path on this round but need to bounce again
                 return (nextWalkState, null);
             }
@@ -96,6 +105,7 @@ public class Trampoline
             }
         }
 
+        Console.WriteLine("Trampoline solution:");
         OutputPaths(FindPaths2());
     }
 
@@ -103,8 +113,8 @@ public class Trampoline
     {
         public readonly ImmutableStack<Node> Path;
         public readonly IEnumerator<Node> RemainingPeers;
-        public readonly bool IsLeaf; 
-        
+        public readonly bool IsLeaf;
+
         public Args(Node node, ImmutableStack<Node> parentPath)
         {
             Path = parentPath.Push(node);
@@ -117,7 +127,7 @@ public class Trampoline
             RemainingPeers.Dispose();
         }
     }
-    
+
     private static void OutputPaths(IEnumerable<ImmutableStack<Node>> recursivePaths)
     {
         foreach (var path in recursivePaths)
