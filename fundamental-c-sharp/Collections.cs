@@ -59,6 +59,13 @@ namespace fundamental_c_sharp
             };
             Trace.Assert(good.ImmutDictProp.Count == 2);
             
+            // Does not compile
+            // good.ImmutDictProp =
+            // {
+            //     {"uno", "one"}
+            // };
+            
+            
             // don't forget that a sorted dictionary is ordered by key (NOT the insertion order)
             var keyArr = good.ImmutDictProp.Keys.ToArray();
             Trace.Assert(keyArr[0] == "due");
