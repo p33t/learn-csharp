@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace extensions_csharp.Validation
 {
@@ -43,6 +42,17 @@ namespace extensions_csharp.Validation
             Debug.Assert(error0MemberNames.Length == 1);
             Debug.Assert(error0MemberNames[0] == "Description");
             Debug.Assert(result[0].ErrorMessage == "Cannot have 'Bad' description");
+            
+            // RegularExpression
+            model.Description = "Adequate";
+            model.MustBeXxx = "Yyy";
+            result.Clear();
+            Validator.TryValidateObject(model, new ValidationContext(model), result, true);
+            Debug.Assert(result.Count == 1);
+            error0MemberNames = result[0].MemberNames.ToArray();
+            Debug.Assert(error0MemberNames.Length == 1);
+            Debug.Assert(error0MemberNames[0] == "MustBeXxx");
+            Debug.Assert(result[0].ErrorMessage == "Must be 'Xxx'");
         }
     }
 }
