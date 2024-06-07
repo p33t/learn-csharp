@@ -45,6 +45,7 @@ namespace fundamental_c_sharp
             // DateTimes3.Demo();
             FileHandling.Demo();
             await EncryptionAes.Demo();
+            Strings.Demo();
 
             Console.WriteLine("Done.");
         }
