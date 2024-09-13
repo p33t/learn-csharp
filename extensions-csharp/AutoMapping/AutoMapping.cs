@@ -29,7 +29,7 @@ namespace extensions_csharp.AutoMapping
         {
             Console.WriteLine("AutoMapping =====================");
             var mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile<MyProfile>());
-            mapperConfiguration.AssertConfigurationIsValid<MyProfile>();
+            mapperConfiguration.AssertConfigurationIsValid();
 
             var mapper = mapperConfiguration.CreateMapper();
 
