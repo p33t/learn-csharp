@@ -9,5 +9,10 @@ public class Strings
     {
         Console.WriteLine("Strings ===========================");
         Trace.Assert("hello".Equals("HellO", StringComparison.OrdinalIgnoreCase));
+        
+        // Note: String.HashCode() is different every time !
+        var bytes = BitConverter.GetBytes(45612390);
+        var hex = BitConverter.ToString(bytes);
+        Trace.Assert("66-FD-B7-02".Equals(hex));
     }
 }

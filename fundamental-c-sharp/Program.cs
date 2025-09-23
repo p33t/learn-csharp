@@ -43,8 +43,8 @@ namespace fundamental_c_sharp
             // Proxying.Demo();
             // Collections.Demo();
             // DateTimes3.Demo();
-            FileHandling.Demo();
-            await EncryptionAes.Demo();
+            // FileHandling.Demo();
+            // await EncryptionAes.Demo();
             Strings.Demo();
 
             Console.WriteLine("Done.");
